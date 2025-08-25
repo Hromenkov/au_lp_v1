@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White-label Exchange</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes dash { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+        @keyframes pop { 0% { opacity: 0; transform: scale(.4); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        @keyframes march { to { stroke-dashoffset: -14; } }
+        @keyframes pulseGlow { 0%,100% { filter: drop-shadow(0 0 0 rgba(13,43,255,.0)); } 50% { filter: drop-shadow(0 0 6px rgba(13,43,255,.25)); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function WLLanding() {
+            const primary = "#0D2BFF";
+            const muted = "#F4F6FB";
+            const success = "#10B981";
+
+            const CTAButton = ({ children = "Оставить заявку", variant = "primary" }) => {
+                const color = variant === "success" ? success : primary;
+                return (
+                    <a
+                        href="#lead"
+                        className="mt-6 inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium text-white"
+                        style={{ backgroundColor: color }}
+                    >
+                        {children}
+                    </a>
+                );
+            };
+
+            const Badge = ({ children }) => (
+                <span className="inline-block rounded-full border px-3 py-1 text-xs">
+                    {children}
+                </span>
+            );
+
+            const Section = ({ id, title, subtitle, children }) => (
+                <section id={id} className="mx-auto max-w-6xl px-4 py-16">
+                    <div className="mb-8 flex items-end justify-between gap-6">
+                        <div>
+                            <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+                            {subtitle && <p className="mt-2 text-sm text-slate-600">{subtitle}</p>}
+                        </div>
+                        <a href="#lead" className="hidden shrink-0 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white md:inline-block">
+                            Оставить заявку
+                        </a>
+                    </div>
+                    {children}
+                </section>
+            );
+
+            const Card = ({ children }) => (
+                <div className="rounded-2xl border bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+                    {children}
+                </div>
+            );
+
+            const Photo = ({ label }) => (
+                <figure className="group relative overflow-hidden rounded-2xl border bg-slate-50">
+                    <svg viewBox="0 0 800 400" className="h-56 w-full md:h-64">
+                        <defs>
+                            <linearGradient id="ph" x1="0" x2="1">
+                                <stop offset="0%" stopColor="#EEF2FF"/>
+                                <stop offset="100%" stopColor="#F8FAFF"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="800" height="400" fill="url(#ph)"/>
+                        <g opacity="0.8">
+                            <circle cx="120" cy="300" r="60" fill="#e2e8f0"/>
+                            <rect x="220" y="280" width="320" height="24" rx="12" fill="#cbd5e1"/>
+                            <rect x="220" y="316" width="180" height="18" rx="9" fill="#e5e7eb"/>
+                        </g>
+                    </svg>
+                    <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-3 text-sm text-white">{label}</figcaption>
+                </figure>
+            );
+
+            const WorkflowPath = () => (
+                <div className="relative overflow-hidden rounded-2xl border bg-white p-6">
+                    <svg viewBox="0 0 1000 260" className="h-[220px] w-full">
+                        <path d="M40 200 C 300 60, 700 60, 960 200" fill="none" stroke={primary} strokeWidth="3" strokeLinecap="round" style={{ strokeDasharray: '1000 1000', strokeDashoffset: 1000, animation: 'dash 1.6s ease-out forwards' }}/>
+                        <g fontSize="12" fill="#fff" textAnchor="middle">
+                            <g>
+                                <circle cx="180" cy="150" r="14" fill={primary} style={{ animation: 'pop .35s ease-out .2s both, float 6s ease-in-out .8s infinite alternate, pulseGlow 3s ease-in-out 1.2s infinite' }} />
+                                <text x="180" y="154" style={{ animation: 'fadeIn .3s ease-out .25s both' }}>1</text>
+                            </g>
+                            <g>
+                                <circle cx="420" cy="100" r="14" fill={primary} style={{ animation: 'pop .35s ease-out .35s both, float 6s ease-in-out 1s infinite alternate, pulseGlow 3s ease-in-out 1.4s infinite' }} />
+                                <text x="420" y="104" style={{ animation: 'fadeIn .3s ease-out .4s both' }}>2</text>
+                            </g>
+                            <g>
+                                <circle cx="660" cy="150" r="14" fill={primary} style={{ animation: 'pop .35s ease-out .5s both, float 6s ease-in-out 1.2s infinite alternate, pulseGlow 3s ease-in-out 1.6s infinite' }} />
+                                <text x="660" y="154" style={{ animation: 'fadeIn .3s ease-out .55s both' }}>3</text>
+                            </g>
+                            <g>
+                                <circle cx="860" cy="200" r="14" fill={primary} style={{ animation: 'pop .35s ease-out .65s both, float 6s ease-in-out 1.4s infinite alternate, pulseGlow 3s ease-in-out 1.8s infinite' }} />
+                                <text x="860" y="204" style={{ animation: 'fadeIn .3s ease-out .7s both' }}>4</text>
+                            </g>
+                        </g>
+                        <g stroke={primary} strokeWidth="2" strokeDasharray="4 6" opacity="0.35">
+                            <line x1="180" y1="164" x2="180" y2="242" style={{ animation: 'fadeIn .4s ease-out .8s both' }}/>
+                            <line x1="420" y1="114" x2="420" y2="242" style={{ animation: 'fadeIn .4s ease-out 1s both' }}/>
+                            <line x1="660" y1="164" x2="660" y2="242" style={{ animation: 'fadeIn .4s ease-out 1.2s both' }}/>
+                            <line x1="860" y1="214" x2="860" y2="242" style={{ animation: 'fadeIn .4s ease-out 1.4s both' }}/>
+                        </g>
+                    </svg>
+                    <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-4">
+                        {[
+                            {n:1,t:"Получаете код",d:"Берёте open‑source или заявку на установку."},
+                            {n:2,t:"Интеграции",d:"KYC/KYT, процессинг, платёжные каналы."},
+                            {n:3,t:"Брендинг и настройки",d:"Тема, домен, комиссии и лимиты."},
+                            {n:4,t:"Запуск",d:"Онлайн, офисы и криптоматы (опционально)."}
+                        ].map((s)=> (
+                            <div key={s.n} className="rounded-xl border bg-white p-4 text-sm">
+                                <div className="mb-1 text-xs font-semibold text-slate-500">Шаг {s.n}</div>
+                                <div className="text-base font-semibold">{s.t}</div>
+                                <div className="mt-1 text-slate-600">{s.d}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const IconWrap = ({ children }) => (
+                <div className="h-10 w-10 rounded-xl" style={{ background: primary }}>
+                    <div className="grid h-10 w-10 place-items-center">{children}</div>
+                </div>
+            );
+
+            const IconSwap = () => (
+                <IconWrap>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="7 7 12 2 17 7"/>
+                        <line x1="12" y1="2" x2="12" y2="22"/>
+                        <polyline points="7 17 12 22 17 17"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            const IconBrand = () => (
+                <IconWrap>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="3"/>
+                        <path d="M8 12h8"/>
+                        <path d="M12 8v8"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            const IconShield = () => (
+                <IconWrap>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            const IconPayments = () => (
+                <IconWrap>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2"/>
+                        <path d="M3 10h18"/>
+                        <path d="M7 15h4"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            const IconPricing = () => (
+                <IconWrap>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 12l5 5 13-13"/>
+                        <circle cx="19" cy="4" r="1.5" fill="#fff" stroke="none"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            const IconMonitoring = () => (
+                <IconWrap>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 12h4l2 6 4-12 2 6h4"/>
+                    </svg>
+                </IconWrap>
+            );
+
+            return (
+                <div className="min-h-screen scroll-smooth bg-white text-slate-900">
+                    {/* NAVBAR */}
+                    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur">
+                        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+                            <div className="flex items-center gap-2">
+                                <div className="grid h-8 w-8 place-items-center rounded-lg" style={{ background: primary }}>
+                                    <span className="text-lg font-black text-white">WL</span>
+                                </div>
+                                <span className="text-sm font-medium tracking-wide">White‑label Exchange</span>
+                            </div>
+                            <nav className="hidden gap-6 md:flex">
+                                <a href="#value" className="text-sm hover:text-black">Возможности</a>
+                                <a href="#gallery" className="text-sm hover:text-black">Галерея</a>
+                                <a href="#how" className="text-sm hover:text-black">Как это работает</a>
+                                <a href="#pricing" className="text-sm hover:text-black">Стоимость</a>
+                                <a href="#integrations" className="text-sm hover:text-black">Интеграции</a>
+                                <a href="#architecture" className="text-sm hover:text-black">Архитектура</a>
+                                <a href="#faq" className="text-sm hover:text-black">FAQ</a>
+                            </nav>
+                            <a href="#lead" className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white">Заявка</a>
+                        </div>
+                    </header>
+
+                    {/* HERO */}
+                    <section className="relative isolate overflow-hidden">
+                        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-20">
+                            <div>
+                                <h1 className="text-3xl font-semibold leading-tight md:text-5xl">
+                                    Запустите свой <span style={{ color: primary }}>обменник</span> за 1–3 дня: ваш бренд, наш open‑source движок 🚀
+                                </h1>
+                                <p className="mt-4 max-w-xl text-slate-600">
+                                    Код бесплатно. Установка по запросу — <strong>$500–$1,000</strong>. Поддержка: Community, Premium, Enterprise.
+                                </p>
+                                <div className="mt-6 flex flex-wrap gap-3">
+                                    <a href="#lead" className="rounded-xl bg-black px-5 py-3 text-white">Запросить демо</a>
+                                    <a href="#value" className="rounded-xl border px-5 py-3">Смотреть возможности</a>
+                                </div>
+                                <div className="mt-6 flex flex-wrap gap-2 text-xs">
+                                    <Badge>✨ Open‑source</Badge>
+                                    <Badge>⚡ Быстрый старт</Badge>
+                                    <Badge>🛡️ Интеграции KYC/KYT</Badge>
+                                    <Badge>🤝 SLA поддержка</Badge>
+                                </div>
+                            </div>
+                            <div className="rounded-3xl border p-6 shadow-sm" style={{ backgroundColor: muted }}>
+                                <div className="grid gap-4">
+                                    <div className="h-8 w-2/3 rounded-lg bg-slate-200"></div>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <div className="h-24 rounded-xl bg-slate-100"></div>
+                                        <div className="h-24 rounded-xl bg-slate-100"></div>
+                                        <div className="h-24 rounded-xl bg-slate-100"></div>
+                                    </div>
+                                    <div className="h-10 rounded-xl bg-slate-200"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* VALUE */}
+                    <Section id="value" title="Что внутри" subtitle="Ключевые преимущества white‑label обменника">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                            {[
+                                { icon: IconSwap, t: "Мультивалютный обмен", d: "Крипта↔крипта, крипта↔фиат, фиат↔фиат. Онлайн и офлайн (офисы/ATM)." },
+                                { icon: IconBrand, t: "Ваш бренд", d: "Логотип, цвета, домен и тексты — под вас." },
+                                { icon: IconShield, t: "KYC и KYT", d: "Готовые интеграции с провайдерами проверки личности и транзакций." },
+                                { icon: IconPayments, t: "Платежи и процессинг", d: "Подключение эквайринга, e‑кошельков и on/off‑ramp." },
+                                { icon: IconPricing, t: "Комиссии и тарифы", d: "Гибкая настройка спреда, скидок и лимитов." },
+                                { icon: IconMonitoring, t: "Отчётность и мониторинг", d: "Журналы операций, выгрузки, алерты." }
+                            ].map((i, idx) => (
+                                <Card key={idx}>
+                                    <div className="mb-3"><i.icon /></div>
+                                    <h3 className="text-lg font-semibold">{i.t}</h3>
+                                    <p className="mt-1 text-sm text-slate-600">{i.d}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* GALLERY */}
+                    <Section id="gallery" title="Как это выглядит" subtitle="Демо-плейсхолдеры (офлайн)">
+                        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                            <Photo label="Криптомат (ATM)"/>
+                            <Photo label="Офис обмена"/>
+                            <Photo label="Интерфейс обмена"/>
+                            <Photo label="Команда внедрения"/>
+                        </div>
+                        <p className="mt-3 text-xs text-slate-500">Плейсхолдеры без сетевых запросов. Позже подставим реальные фото/рендеры.</p>
+                    </Section>
+
+                    {/* HOW IT WORKS */}
+                    <Section id="how" title="Как это работает" subtitle="Красивая дорожка процесса">
+                        <WorkflowPath />
+                    </Section>
+
+                    <Section id="pricing" title="Стоимость и поддержка" subtitle="Установка по запросу, 3 варианта поддержки">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                            <Card>
+                                <h3 className="text-lg font-semibold">Community</h3>
+                                <p className="mt-1 text-sm text-slate-600">Форум/документация. Без гарантий по времени ответа.</p>
+                                <div className="mt-6 text-3xl font-bold">$0</div>
+                                <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                                    <li>Ответ сообщества</li>
+                                    <li>Открытый код</li>
+                                </ul>
+                                <CTAButton />
+                            </Card>
+                            <Card>
+                                <h3 className="text-lg font-semibold">Premium</h3>
+                                <p className="mt-1 text-sm text-slate-600">Тикеты, чат, e‑mail в рабочие часы (пн–пт, 08:00–20:00, UTC+3).</p>
+                                <div className="mt-6 text-3xl font-bold">$990<span className="text-base font-medium text-slate-500">/мес</span></div>
+                                <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                                    <li>Включены квоты проверок KYC/KYT</li>
+                                    <li>Сниженная комиссия на крипто‑процессинг</li>
+                                    <li>SLA: первый ответ ≤ 2ч, решение ≤ 1 р/д</li>
+                                </ul>
+                                <CTAButton />
+                            </Card>
+                            <Card>
+                                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-slate-900 px-2 py-1 text-xs text-white">Рекомендуем бизнесу</div>
+                                <h3 className="text-lg font-semibold">Enterprise</h3>
+                                <p className="mt-1 text-sm text-slate-600">Всё из Premium + 24/7, выделенный менеджер, расширенный SLA.</p>
+                                <div className="mt-6 text-3xl font-bold">$2,900<span className="text-base font-medium text-slate-500">/мес</span></div>
+                                <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                                    <li>Приоритетная очередь</li>
+                                    <li>SLA: первый ответ ≤ 1ч, решение ≤ 8ч</li>
+                                    <li>Ежеквартальные сервис‑ревью</li>
+                                </ul>
+                                <CTAButton variant="success" />
+                            </Card>
+                        </div>
+                        <div className="mt-8 rounded-2xl border bg-slate-50 p-6 text-sm">
+                            <p><strong>Установка по запросу:</strong> разовая услуга <strong>$500–$1,000</strong>. Включает деплой, базовую настройку и запуск.</p>
+                        </div>
+                    </Section>
+
+                    {/* INTEGRATIONS */}
+                    <Section id="integrations" title="Интеграции" subtitle="Подключим нужных провайдеров под ваш регион">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                            {["KYC (личность)", "KYT/AML (транзакции)", "Платёжные провайдеры", "SSO/Безопасность"].map((it, i) => (
+                                <Card key={i}>
+                                    <h3 className="text-base font-semibold">{it}</h3>
+                                    <p className="mt-1 text-sm text-slate-600">Поддержка нескольких поставщиков. Согласуем под вашу юрисдикцию.</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* ARCHITECTURE */}
+                    <Section id="architecture" title="Архитектура решения" subtitle="Слои платформы и как они взаимодействуют">
+                        <div className="relative grid grid-cols-1 gap-4 md:grid-cols-4">
+                            {[
+                                { title: "Клиентский слой", gradient: "linear-gradient(135deg,#38bdf8,#2563eb)", pills:["Лендинг","Виджет","KYC формы"]},
+                                { title: "WL‑движок", gradient: "linear-gradient(135deg,#a78bfa,#6366f1)", pills:["Комиссии","Маршруты","Лимиты"]},
+                                { title: "Интеграции", gradient: "linear-gradient(135deg,#34d399,#10b981)", pills:["KYC/KYT","Эквайринг","On/Off‑ramp"]},
+                                { title: "Мониторинг", gradient: "linear-gradient(135deg,#94a3b8,#64748b)", pills:["Логи","Алерты","Отчёты"]}
+                            ].map((m, i) => (
+                                <div key={i} className="relative rounded-2xl p-6 text-white shadow-lg" style={{ background: m.gradient }}>
+                                    <h3 className="text-lg font-semibold">{m.title}</h3>
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {m.pills.map((p,idx)=> (
+                                            <span key={idx} className="rounded-full bg-white/20 px-3 py-1 text-xs backdrop-blur">{p}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div className="rounded-2xl border p-4 text-sm">
+                                <div className="font-semibold">Безопасность</div>
+                                <p className="mt-1 text-slate-600">SSO, роли и права, шифрование, аудит действий.</p>
+                            </div>
+                            <div className="rounded-2xl border p-4 text-sm">
+                                <div className="font-semibold">Масштабирование</div>
+                                <p className="mt-1 text-slate-600">Горизонтальные сервисы, очереди задач, кэш.</p>
+                            </div>
+                        </div>
+                    </Section>
+
+                    {/* FAQ */}
+                    <Section id="faq" title="Частые вопросы" subtitle="Коротко и по делу">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            {[
+                                { q: "Open‑source — бесплатно?", a: "Да. Код открыт и бесплатен. По запросу мы установим его за $500–$1,000." },
+                                { q: "Нужны ли KYC/KYT?", a: "Да, в зависимости от страны и каналов. Мы подключаем подходящих провайдеров." },
+                                { q: "Можно офлайн?", a: "Да: точки в офисах и криптоматы (ATM)." },
+                                { q: "Сколько времени запуск?", a: "Обычно 1–3 дня при готовых интеграциях." }
+                            ].map((i, idx) => (
+                                <Card key={idx}>
+                                    <h3 className="font-semibold">{i.q}</h3>
+                                    <p className="mt-2 text-sm text-slate-600">{i.a}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* LEAD */}
+                    <Section id="lead" title="Получите доступ к коду и расчёт запуска" subtitle="Минимум полей — максимум пользы">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <Card>
+                                <form className="grid gap-3">
+                                    <input placeholder="Имя" className="rounded-xl border px-4 py-3" />
+                                    <input placeholder="E‑mail" className="rounded-xl border px-4 py-3" />
+                                    <input placeholder="Компания/сайт" className="rounded-xl border px-4 py-3" />
+                                    <input placeholder="Страна" className="rounded-xl border px-4 py-3" />
+                                    <input placeholder="Telegram/WhatsApp" className="rounded-xl border px-4 py-3" />
+                                    <label className="flex items-center gap-2 text-sm"><input type="checkbox"/> Нужна установка ($500–$1,000)</label>
+                                    <button className="mt-1 rounded-xl bg-black px-5 py-3 text-white">Отправить заявку</button>
+                                </form>
+                            </Card>
+                            <div className="md:col-span-2">
+                                <Card>
+                                    <h3 className="text-lg font-semibold">Что будет дальше</h3>
+                                    <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                                        <li>В течение 24 часов свяжемся и уточним страну/каналы.</li>
+                                        <li>Дадим список интеграций под вашу юрисдикцию.</li>
+                                        <li>При необходимости — забронируем установку ($500–$1,000).</li>
+                                    </ul>
+                                </Card>
+                            </div>
+                        </div>
+                    </Section>
+
+                    <footer className="border-t py-10 text-center text-xs text-slate-500">
+                        © {new Date().getFullYear()} AU • White‑label Exchange
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<WLLanding />, document.getElementById('root'));
+    </script>
+</body>
+</html>
